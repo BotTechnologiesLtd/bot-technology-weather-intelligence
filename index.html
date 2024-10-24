@@ -17,7 +17,7 @@
     <script>
         async function getWeather() {
             const location = document.getElementById('locationInput').value;
-            const apiKey = 'your_openweathermap_api_key';
+            const apiKey = 'a3419fdc9fca0fac559780f35d2f6a80';
             const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
             
             try {
@@ -50,5 +50,32 @@
             }
         }
     </script>
+
+    <script>
+    async function sendSMS() {
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        const message = document.getElementById('message').value;
+
+        try {
+            const response = await fetch('https://bot-weather-intelligence.netlify.app/.netlify/functions/send-sms', {
+                method: 'POST',
+                body: JSON.stringify({ phoneNumber, message }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('result').innerText = 'SMS sent successfully!';
+            } else {
+                document.getElementById('result').innerText = 'Error sending SMS: ' + result.error;
+            }
+        } catch (error) {
+            console.error('Error sending SMS:', error);
+            document.getElementById('result').innerText = 'Failed to send SMS';
+        }
+    }
+</script>
+
 </body>
 </html>
